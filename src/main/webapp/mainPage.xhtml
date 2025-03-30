@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <meta charset="UTF-8" />
+    <title>Patient Management - E-Health System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        form {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        input, textarea, button {
+            margin: 5px 0;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #2c3e50;
+            color: #fff;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <f:view>
+        <h1>Patient Management</h1>
+
+        <!-- Patient Form -->
+        <h:form id="patientForm">
+            <h2>Add New Patient</h2>
+            <h:messages style="color:red" />
+
+            Name: <h:inputText value="#{patient.patient.firstName}" required="true" /><br/>
+            Surname: <h:inputText value="#{patient.patient.surname}" required="true" /><br/>
+            Email: <h:inputText value="#{patient.patient.email}" type="email" required="true" /><br/>
+            Date of Birth: <h:inputText value="#{patient.patient.dateOfBirth}" required="true" >
+            <f:convertDateTime type="localDate" pattern="dd/MM/yyyy" />
+        </h:inputText>
+            <br/>
+            Details: <h:inputTextarea value="#{patient.patient.details}" /><br/>
+            Doctor: <h:inputText value="#{patient.patient.doctor}" required="true" /><br/>
+
+            <h:commandButton actionListener="#{patient.addPatient}" value="Add Patient" /><br/>
+        </h:form>
+</h:body>
+</html>
