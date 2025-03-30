@@ -53,7 +53,6 @@
 </h:head>
 
 <h:body>
-    <f:view>
         <h1>Patient Management</h1>
 
         <!-- Patient Form -->
@@ -64,7 +63,7 @@
             Name: <h:inputText value="#{patient.patient.firstName}" required="true" /><br/>
             Surname: <h:inputText value="#{patient.patient.surname}" required="true" /><br/>
             Email: <h:inputText value="#{patient.patient.email}" type="email" required="true" /><br/>
-            Date of Birth: <h:inputText value="#{patient.patient.dateOfBirth}" required="true" >
+            Date of Birth (dd/MM/yyyy): <h:inputText value="#{patient.patient.dateOfBirth}" required="true" >
             <f:convertDateTime type="localDate" pattern="dd/MM/yyyy" />
         </h:inputText>
             <br/>

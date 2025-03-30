@@ -30,7 +30,10 @@ public class PatientJSFBEAN implements Serializable {
     public void addPatient() {
         patientDAO.addPatient(new Patient(patient.getFirstName(), patient.getSurname(), patient.getEmail(),
                 patient.getDateOfBirth(), patient.getDetails(), patient.getDoctor()));
-        patient = new Patient(); // Reset form after submission
+        System.out.println(patient);
+        // Reset form after submission
+        patient = new Patient();
+
     }
 
     public void editPatient(Patient p) {
