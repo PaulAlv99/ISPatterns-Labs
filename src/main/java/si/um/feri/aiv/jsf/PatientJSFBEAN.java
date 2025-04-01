@@ -19,28 +19,53 @@ public class PatientJSFBEAN implements Serializable {
     private PatientDAO patientDAO;
 
 
-    public ArrayList<Patient> getPatients() {
+    public ArrayList<Patient> getAllPatients() {
         return patientDAO.getAllPatients();
+    }
+
+    public ArrayList<Patient> getAllPatientsWithDoctor(){
+        return patientDAO.getAllPatientsWithDoctor();
+    }
+
+    public ArrayList<Patient> getAllPatientsWithoutDoctor(){
+        return patientDAO.getAllPatientsWithoutDoctor();
     }
 
     public Patient getPatient() {
         return patient;
     }
 
-    public void addPatient() {
-        patientDAO.addPatient(new Patient(patient.getFirstName(), patient.getSurname(), patient.getEmail(),
-                patient.getDateOfBirth(), patient.getDetails(), patient.getDoctor()));
-        System.out.println(patient);
-        // Reset form after submission
-        patient = new Patient();
+//    public void addPatient() {
+//        patientDAO.addPatient(new Patient(patient.getFirstName(), patient.getSurname(), patient.getEmail(),
+//                patient.getDateOfBirth(), patient.getDetails(), patient.getDoctor()));
+//        System.out.println(patient);
+//        // Reset form after submission
+//        patient = new Patient();
+//
+//    }
 
+    public void addPatient() {
+        if (patient.getAction() == Patient.action.EDIT) {
+            // Edit existing patient (you might need to update the DAO)
+            patientDAO.updatePatient(patient);
+            System.out.println("Edited: " + patient);
+        } else {
+            // Add new patient
+            patientDAO.addPatient(new Patient(patient.getFirstName(), patient.getSurname(),
+                    patient.getEmail(), patient.getDateOfBirth(), patient.getDetails(), patient.getDoctor()));
+            System.out.println("Added: " + patient);
+        }
+        // Reset form after saving
+        patient = new Patient();
     }
+
 
     public void editPatient(Patient p) {
         this.patient = p;
+        this.patient.setAction(Patient.action.EDIT);
     }
 
     public void deletePatient(Patient p) {
-        patientDAO.deletePatient(getPatients().indexOf(p));
+        patientDAO.deletePatient(getAllPatients().indexOf(p));
     }
 }

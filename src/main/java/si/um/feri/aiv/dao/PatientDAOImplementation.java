@@ -6,7 +6,6 @@ import jakarta.inject.Named;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 @ApplicationScoped
 public class PatientDAOImplementation implements PatientDAO {
@@ -17,6 +16,26 @@ public class PatientDAOImplementation implements PatientDAO {
         return patients;
     }
 
+    @Override
+    public ArrayList<Patient> getAllPatientsWithDoctor() {
+        ArrayList<Patient> patientsWithDoctor = new ArrayList<>();
+        for(Patient patient : patients) {
+            if(!patient.getDoctor().isEmpty()) {
+                patientsWithDoctor.add(patient);
+            }
+        }
+        return patientsWithDoctor;
+    }
+    @Override
+    public ArrayList<Patient> getAllPatientsWithoutDoctor() {
+        ArrayList<Patient> patientsWithoutDoctor = new ArrayList<>();
+        for(Patient patient : patients) {
+            if(patient.getDoctor().isEmpty()) {
+                patientsWithoutDoctor.add(patient);
+            }
+        }
+        return patientsWithoutDoctor;
+    }
     @Override
     public Patient getPatientById(int id) {
         return (id >= 0 && id < patients.size()) ? patients.get(id) : null;
@@ -51,7 +70,7 @@ public class PatientDAOImplementation implements PatientDAO {
 
     @Override
     public void updatePatient(Patient patient) {
-        // Update logic can be implemented
+
     }
 
     @Override

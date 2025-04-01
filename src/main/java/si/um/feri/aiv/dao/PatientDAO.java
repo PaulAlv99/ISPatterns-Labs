@@ -7,6 +7,10 @@ public interface PatientDAO {
     // Retrieve all patients
     ArrayList<Patient> getAllPatients();
 
+    ArrayList<Patient> getAllPatientsWithDoctor();
+
+    ArrayList<Patient> getAllPatientsWithoutDoctor();
+
     // Retrieve a patient by ID
     Patient getPatientById(int id);
 

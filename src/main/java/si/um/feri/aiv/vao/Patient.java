@@ -3,6 +3,12 @@ package si.um.feri.aiv.vao;
 import java.time.LocalDate;
 
 public class Patient{
+    private static int patientId = 1;
+    public enum action {
+        EDIT,
+        FINISHED
+    }
+    private action action;
     private String firstName;
     private String surname;
     private String email;
@@ -12,6 +18,8 @@ public class Patient{
 
     // Constructor
     public Patient(String firstName, String surname, String email, LocalDate dateOfBirth, String details, String doctor) {
+        this.action = action.FINISHED;
+        this.patientId = patientId++;
         this.firstName = firstName;
         this.surname = surname;
         this.email = email;
@@ -19,9 +27,32 @@ public class Patient{
         this.details = details;
         this.doctor = doctor;
     }
-    public Patient() {}
 
+    public Patient(String firstName, String surname, String email, LocalDate dateOfBirth, String details) {
+        this.action = action.FINISHED;
+        this.patientId = patientId++;
+        this.firstName = firstName;
+        this.surname = surname;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+        this.details = details;
+    }
+
+    public Patient(){};
     // Getters and Setters
+
+    public action getAction() {
+        return action;
+    }
+
+    public void setAction(action action) {
+        this.action = action;
+    }
+
+    public int getPatientId() {
+        return patientId;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -48,6 +79,10 @@ public class Patient{
 
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
+    }
+
+    public String getDateOfBirthString() {
+        return dateOfBirth.toString();
     }
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
