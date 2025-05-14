@@ -1,10 +1,17 @@
 package si.um.feri.aiv.vao;
 
+import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "patients")
 public class Patient implements Serializable {
-    private static int patientId = 1;
+    public static int nPatients=1;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int patientId;
     public enum action {
         EDIT,
         FINISHED
@@ -15,12 +22,15 @@ public class Patient implements Serializable {
     private String email;
     private LocalDate dateOfBirth;
     private String details;
-    private String doctor;
+    @ManyToOne
+    @JoinColumn(name = "doctorId", referencedColumnName = "doctorId") // optional, but explicit
+    private Doctor doctor;
+
 
     // Constructor
-    public Patient(String firstName, String surname, String email, LocalDate dateOfBirth, String details, String doctor) {
+    public Patient(String firstName, String surname, String email, LocalDate dateOfBirth, String details, Doctor doctor) {
         this.action = action.FINISHED;
-        this.patientId = patientId++;
+        this.patientId = nPatients++;
         this.firstName = firstName;
         this.surname = surname;
         this.email = email;
@@ -31,7 +41,7 @@ public class Patient implements Serializable {
 
     public Patient(String firstName, String surname, String email, LocalDate dateOfBirth, String details) {
         this.action = action.FINISHED;
-        this.patientId = patientId++;
+        this.patientId = nPatients++;
         this.firstName = firstName;
         this.surname = surname;
         this.email = email;
@@ -98,18 +108,19 @@ public class Patient implements Serializable {
         this.details = details;
     }
 
-    public String getDoctor() {
+    public Doctor getDoctor() {
         return doctor;
     }
 
-    public void setDoctor(String doctor) {
+    public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
     }
 
     @Override
     public String toString() {
         return "Patient{" +
-                "firstName='" + firstName + '\'' +
+                "patientId=" + patientId +
+                ", firstName='" + firstName + '\'' +
                 ", surname='" + surname + '\'' +
                 ", email='" + email + '\'' +
                 ", dateOfBirth=" + dateOfBirth +

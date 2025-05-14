@@ -10,7 +10,7 @@ import si.um.feri.aiv.vao.Patient;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/patientsWithoutDoctorRemote")
 public class PatientsWithoutDoctorServlet extends HttpServlet {
@@ -22,7 +22,7 @@ public class PatientsWithoutDoctorServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        ArrayList<Patient> patients = patientsWithoutDoctorBean.getPatientsWithoutDoctor();
+        List<Patient> patients = patientsWithoutDoctorBean.getPatientsWithoutDoctor();
 
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {

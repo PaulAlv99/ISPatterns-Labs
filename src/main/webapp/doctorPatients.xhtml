@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <meta charset="UTF-8" />
+    <title>Patients of #{doctor.selectedDoctor.firstName} #{doctor.selectedDoctor.surname}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        form {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        input, textarea, button {
+            margin: 5px 0;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #2c3e50;
+            color: #fff;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <h1>Patients of Dr. #{doctor.selectedDoctor.firstName} #{doctor.selectedDoctor.surname}</h1>
+    <br></br>
+    <a href="doctorPage.xhtml">Back to Doctor Management</a><br></br>
+    <h:form>
+        <h:dataTable value="#{doctor.selectedDoctorPatients}" var="p" border="1">
+            <h:column>
+                <f:facet name="header">First Name</f:facet>
+                #{p.firstName}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Surname</f:facet>
+                #{p.surname}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Email</f:facet>
+                #{p.email}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Date of Birth</f:facet>
+                #{p.dateOfBirth}
+            </h:column>
+        </h:dataTable>
+
+        <br/>
+
+    </h:form>
+</h:body>
+</html>

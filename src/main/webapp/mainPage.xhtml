@@ -56,7 +56,9 @@
         <h1>Patient Management</h1>
         <a href="patientsWithDoctor.xhtml">See patients with doctor</a><br></br>
         <a href="patientsWithoutDoctor.xhtml">See patients without doctor</a><br></br>
-        <a href="/sampleProject/patientsWithoutDoctorRemote">See patients without doctor-Srvlet</a><br/>
+        <a href="doctorPage.xhtml">Manage Doctors</a><br></br>
+
+    <a href="/sampleProject/patientsWithoutDoctorRemote">See patients without doctor-Srvlet</a><br/>
         <!-- Patient Form -->
         <h:form id="patientForm">
             <h2>#{patient.patient.action eq 'EDIT' ? 'Edit Patient' : 'Add New Patient'}</h2>
@@ -70,9 +72,15 @@
         </h:inputText>
             <br/>
             Details: <h:inputTextarea value="#{patient.patient.details}" /><br/>
-            Doctor: <h:inputText value="#{patient.patient.doctor}"/><br/>
+            <h:outputLabel value="Doctor"/>
+            <h:selectOneMenu value="#{patient.selectedDoctorId}">
+                <f:selectItem itemLabel="-- Select Doctor --" itemValue="#{null}" />
+                <f:selectItems value="#{patient.allDoctors}" var="doc"
+                               itemLabel="#{doc.firstName} #{doc.surname}"
+                               itemValue="#{doc.doctorId}" />
 
-            <h:commandButton actionListener="#{patient.addPatient}"
+            </h:selectOneMenu>
+            <h:commandButton actionListener="#{patient.savePatient}"
                              value="#{patient.patient.action eq 'EDIT' ? 'Edit Patient' : 'Add Patient'}" />
         </h:form>
 </h:body>

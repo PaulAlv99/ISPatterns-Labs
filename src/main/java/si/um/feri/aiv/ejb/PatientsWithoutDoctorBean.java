@@ -4,7 +4,7 @@ import si.um.feri.aiv.dao.*;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.EJB;
 import si.um.feri.aiv.vao.Patient;
-import java.util.ArrayList;
+import java.util.List;
 
 @Stateless
 public class PatientsWithoutDoctorBean implements PatientsWithoutDoctorRemote {
@@ -13,7 +13,7 @@ public class PatientsWithoutDoctorBean implements PatientsWithoutDoctorRemote {
     private PatientDAO patientDAO;
 
     @Override
-    public ArrayList<Patient> getPatientsWithoutDoctor() {
+    public List<Patient> getPatientsWithoutDoctor() {
         return patientDAO.getAllPatientsWithoutDoctor();
     }
 }

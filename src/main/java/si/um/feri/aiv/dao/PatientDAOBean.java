@@ -1,82 +1,75 @@
 package si.um.feri.aiv.dao;
 
 import si.um.feri.aiv.vao.Patient;
+import si.um.feri.aiv.vao.Doctor;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.Local;
-
-import java.util.ArrayList;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Stateless
 @Local(PatientDAO.class)
 public class PatientDAOBean implements PatientDAO {
-    private ArrayList<Patient> patients = new ArrayList<>();
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
-    public ArrayList<Patient> getAllPatients() {
-        return patients;
+    public List<Patient> getAllPatients() {
+        return em.createQuery("SELECT p FROM Patient p", Patient.class).getResultList();
     }
 
     @Override
-    public ArrayList<Patient> getAllPatientsWithDoctor() {
-        ArrayList<Patient> patientsWithDoctor = new ArrayList<>();
-        for(Patient patient : patients) {
-            if(!patient.getDoctor().isEmpty()) {
-                patientsWithDoctor.add(patient);
-            }
-        }
-        return patientsWithDoctor;
+    public List<Patient> getAllPatientsWithDoctor() {
+        return em.createQuery("SELECT p FROM Patient p WHERE p.doctor IS NOT NULL", Patient.class)
+                .getResultList();
     }
+
     @Override
-    public ArrayList<Patient> getAllPatientsWithoutDoctor() {
-        ArrayList<Patient> patientsWithoutDoctor = new ArrayList<>();
-        for(Patient patient : patients) {
-            if(patient.getDoctor().isEmpty()) {
-                patientsWithoutDoctor.add(patient);
-            }
-        }
-        return patientsWithoutDoctor;
+    public List<Patient> getAllPatientsWithoutDoctor() {
+        return em.createQuery("SELECT p FROM Patient p WHERE p.doctor IS NULL", Patient.class)
+                .getResultList();
     }
+
     @Override
     public Patient getPatientById(int id) {
-        return (id >= 0 && id < patients.size()) ? patients.get(id) : null;
+        return em.find(Patient.class, id);
     }
 
     @Override
-    public ArrayList<Patient> getPatientByName(String firstName, String surname) {
-        ArrayList<Patient> result = new ArrayList<>();
-        for (Patient p : patients) {
-            if (p.getFirstName().equalsIgnoreCase(firstName) && p.getSurname().equalsIgnoreCase(surname)) {
-                result.add(p);
-            }
-        }
-        return result;
+    public List<Patient> getPatientByName(String firstName, String surname) {
+        return em.createQuery("SELECT p FROM Patient p WHERE LOWER(p.firstName) = LOWER(:firstName) AND LOWER(p.surname) = LOWER(:surname)", Patient.class)
+                .setParameter("firstName", firstName)
+                .setParameter("surname", surname)
+                .getResultList();
     }
 
     @Override
-    public ArrayList<Patient> getPatientByEmail(String email) {
-        ArrayList<Patient> result = new ArrayList<>();
-        for (Patient p : patients) {
-            if (p.getEmail().equalsIgnoreCase(email)) {
-                result.add(p);
-            }
-        }
-        return result;
+    public List<Patient> getPatientByEmail(String email) {
+        return em.createQuery("SELECT p FROM Patient p WHERE LOWER(p.email) = LOWER(:email)", Patient.class)
+                .setParameter("email", email)
+                .getResultList();
     }
 
     @Override
     public void addPatient(Patient patient) {
-        patients.add(patient);
+        em.persist(patient);
     }
 
     @Override
     public void updatePatient(Patient patient) {
-
+        em.merge(patient);
     }
 
     @Override
     public void deletePatient(int id) {
-        if (id >= 0 && id < patients.size()) {
-            patients.remove(id);
+        Patient p = em.find(Patient.class, id);
+        if (p != null) {
+            Doctor doctor = p.getDoctor();
+            if (doctor != null) {
+                p.setDoctor(null);
+            }
+            em.remove(p);
         }
     }
 }

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <meta charset="UTF-8" />
+    <title>Doctor Management - E-Health System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        form {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        input, button {
+            margin: 5px 0;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #2c3e50;
+            color: #fff;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .no-doctors {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <h1>Doctor Management</h1>
+
+    <!-- Navigation Links (same as main page) -->
+    <a href="mainPage.xhtml">Go Back</a><br></br>
+    <a href="patientsWithDoctor.xhtml">See patients with doctor</a><br/>
+    <a href="patientsWithoutDoctor.xhtml">See patients without doctor</a><br/>
+    <a href="doctorPage.xhtml">Manage Doctors</a><br/>
+    <a href="/sampleProject/patientsWithoutDoctorRemote">See patients without doctor - Servlet</a><br/>
+
+    <!-- Doctor Form -->
+    <h:form id="doctorForm">
+        <h2>#{doctor.selectedDoctor.action eq 'EDIT' ? 'Edit Doctor' : 'Add New Doctor'}</h2>
+        <h:messages style="color:red" />
+
+        <h:panelGrid columns="2">
+            <h:outputLabel value="First Name" />
+            <h:inputText value="#{doctor.selectedDoctor.firstName}" required="true" />
+
+            <h:outputLabel value="Surname" />
+            <h:inputText value="#{doctor.selectedDoctor.surname}" required="true" />
+
+            <h:outputLabel value="Email" />
+            <h:inputText type="email" value="#{doctor.selectedDoctor.email}" required="true" />
+
+            <h:outputLabel value="Max Patients" />
+            <h:inputText value="#{doctor.selectedDoctor.maxPatients}" required="true">
+                <f:validateLongRange minimum="1" />
+            </h:inputText>
+
+            <h:outputLabel />
+            <h:commandButton value="#{doctor.selectedDoctor.action eq 'EDIT' ? 'Update Doctor' : 'Add Doctor'}"
+                             action="#{doctor.addDoctor}" />
+        </h:panelGrid>
+    </h:form>
+
+    <!-- Doctor Table -->
+    <h:form id="doctorTableForm">
+        <h:panelGroup rendered="#{not empty doctor.allDoctors}">
+            <h:dataTable value="#{doctor.allDoctors}" var="doc" border="1">
+                <h:column>
+                    <f:facet name="header">Name</f:facet>
+                    <h:outputText value="#{doc.firstName} #{doc.surname}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Email</f:facet>
+                    <h:outputText value="#{doc.email}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Current Patients</f:facet>
+                    <h:outputText value="#{doc.currentPatients}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Max Patients</f:facet>
+                    <h:outputText value="#{doc.maxPatients}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Actions</f:facet>
+                    <h:commandButton value="View Requests" action="#{doctor.goToRequests}">
+                        <f:setPropertyActionListener target="#{doctor.selectedDoctor}" value="#{doc}" />
+                    </h:commandButton>
+                    <h:commandButton value="Edit" action="#{doctor.editDoctor(doc)}" />
+                    <h:commandButton value="Delete" action="#{doctor.deleteDoctor(doc)}"
+                                     onclick="return confirm('Are you sure you want to delete this doctor?');" />
+                    <h:commandButton value="View Patients" action="#{doctor.viewPatients(doc)}" />
+                </h:column>
+            </h:dataTable>
+        </h:panelGroup>
+
+        <h:panelGroup rendered="#{empty doctor.allDoctors}">
+            <h:outputText value="No doctors available." styleClass="no-doctors" />
+        </h:panelGroup>
+    </h:form>
+</h:body>
+</html>
